@@ -60,7 +60,7 @@ async def version(interaction: discord.Interaction):
         data = requests.get("https://weao.xyz/api/versions/current", timeout=10).json()
 
         embed = discord.Embed(color = 0xC75456)
-        embed.add_field(name =" Version", value = data.get("Windows", "idk"), inline = False)
+        embed.add_field(name = "Version", value = data.get("Windows", "idk"), inline = False)
         embed.add_field(name = "Date", value = data.get("WindowsDate", "idk"), inline = False)
 
         await interaction.response.send_message(embed=embed)

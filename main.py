@@ -9,14 +9,8 @@ import asyncio
 
 intents = discord.Intents.default()
 intents.message_content = True
-
 client = commands.Bot(command_prefix=".", intents=discord.Intents.all())
-
-# -----------------------------
-# GLOBAL AIOHTTP SESSION (IMPORTANT)
-# -----------------------------
 session: aiohttp.ClientSession | None = None
-
 
 FILES = [
     "03137d3096875861.txt", "129521809f206cc2.txt", "21c8125db11e7793.txt",

@@ -4,6 +4,7 @@ from discord import app_commands
 import os
 import random
 import requests
+import aiohttp
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -23,22 +24,18 @@ FILES = [ # its just github file names from the repo (THIS IS A OLD SYSTEM AND I
     "f0b2d8a7d9c6a2ab.txt",
 ]
 
-def uwuify_text(text: str, provider: str = "uwuify"):
-    payload = {
-        "text": text,
-        "provider": provider
-    }
+# shit crashed so i dumped the logs to ai and it gave me this solution lol
+async def uwuify_text(text: str, provider: str = "uwuify"):
+    payload = { "text": text, "provider": provider }
 
     try:
-        response = requests.post("https://uwu.pm/api/v1/uwu", json=payload, timeout=30)
-
-        if not response.ok:
-            return None, f"{response.status_code}"
-
-        data = response.json()
-        result = data.get("text") or data.get("uwu") or str(data)
-
-        return result, None
+        async with aiohttp.ClientSession() as session:
+            async with session.post("https://uwu.pm/api/v1/uwu", json=payload, timeout=aiohttp.ClientTimeout(total=15)) as response:
+                if response.status != 200:
+                    return None, f"{response.status}"
+                data = await response.json()
+                result = data.get("text") or data.get("uwu") or str(data)
+                return result, None
 
     except Exception as e:
         return None, str(e)
